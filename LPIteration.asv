@@ -1,0 +1,43 @@
+%due to the fact that the one cell difference from each iteration 
+%make the denominator delta x is simplified to 1
+
+%4 * V(m,n) = V(m+1,n)+V(m-1,n)+V(m,n+1)+V(m,n-1);
+
+set(0,'DefaultFigureWindowStyle','docked')
+%matrix columns 
+nx = 100;
+%matrix rows 
+ny = 100; 
+%max number of iterations
+ni = 100;
+%initializing the matrix
+V = zeros(nx,ny);
+%Top boundary
+V(1,:) = 0;
+%buttom boundary
+V(ny,:) = 0;
+%left boundary
+V(:,1) = 1;
+%right boundary
+V(:,nx) = 1;
+
+SideToZero = 1;
+for k = 1:ni
+    for i = 2:nx-1
+        for j = 2:ny-1
+        V(i,j) = (V(i+1,j)+V(i-1,j)+V(i,j+1)+V(i,j-1))/4;
+        end
+        if mod(k,50) == 0
+            surf(V')
+            pause(0.05)
+        end 
+    end
+end
+
+[Ex,Ey] = gradient(V);
+%imboxfilt(V,3)
+figure
+quiver(-Ey',-Ex',1)
+figure(2) 
+plot(2,1,1);
+Esurf = surf(Ex,Ey);
